@@ -1,6 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { getFbVideoInfo } from "fb-downloader-scrapper";
-import { scrapeFacebookVideoInfo } from "../../utils/FBScrap";
 
 interface InfoQuery {
   url?: string;
@@ -25,14 +24,8 @@ export default async function (fastify: FastifyInstance) {
         if (!videoUrl) {
           return reply.status(404).send({ error: "Video not found" });
         }
-
-        const meta = await scrapeFacebookVideoInfo(url);
-
         return reply.send({
-          ...meta,
-          title: meta.title || result.title,
-          quality: result.hd ? "HD" : "SD",
-          videoUrl,
+          ...result,
         });
       } catch (err) {
         request.log.error({ err }, "Error in /fb/video");

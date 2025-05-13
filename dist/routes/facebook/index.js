@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = default_1;
 const fb_downloader_scrapper_1 = require("fb-downloader-scrapper");
-const FBScrap_1 = require("../../utils/FBScrap");
 async function default_1(fastify) {
     fastify.get("/fb/video", async (request, reply) => {
         const { url } = request.query;
@@ -16,8 +15,7 @@ async function default_1(fastify) {
             if (!videoUrl) {
                 return reply.status(404).send({ error: "Video not found" });
             }
-            const meta = await (0, FBScrap_1.scrapeFacebookVideoInfo)(url);
-            return reply.send(Object.assign(Object.assign({}, meta), { title: meta.title || result.title, quality: result.hd ? "HD" : "SD", videoUrl }));
+            return reply.send(Object.assign({}, result));
         }
         catch (err) {
             request.log.error({ err }, "Error in /fb/video");
