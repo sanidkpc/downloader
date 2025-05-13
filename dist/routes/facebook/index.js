@@ -17,10 +17,10 @@ async function default_1(fastify) {
                 return reply.status(404).send({ error: "Video not found" });
             }
             const meta = await (0, FBScrap_1.scrapeFacebookVideoInfo)(url);
-            return reply.send(Object.assign({ videoTitle: meta.title || result.title, quality: result.hd ? "HD" : "SD", videoUrl }, meta));
+            return reply.send(Object.assign(Object.assign({}, meta), { title: meta.title || result.title, quality: result.hd ? "HD" : "SD", videoUrl }));
         }
         catch (err) {
-            request.log.error({ err }, "Error in /facebook/get");
+            request.log.error({ err }, "Error in /fb/video");
             return reply.status(500).send({ error: "Failed to fetch video info" });
         }
     });

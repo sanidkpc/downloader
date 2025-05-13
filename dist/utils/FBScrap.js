@@ -6,7 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.scrapeFacebookVideoInfo = void 0;
 const puppeteer_1 = __importDefault(require("puppeteer"));
 const scrapeFacebookVideoInfo = async (url) => {
-    const browser = await puppeteer_1.default.launch({ headless: true });
+    const browser = await puppeteer_1.default.launch({
+        headless: true,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
     const page = await browser.newPage();
     try {
         await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });

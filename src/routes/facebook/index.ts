@@ -29,13 +29,13 @@ export default async function (fastify: FastifyInstance) {
         const meta = await scrapeFacebookVideoInfo(url);
 
         return reply.send({
-          videoTitle: meta.title || result.title,
+          ...meta,
+          title: meta.title || result.title,
           quality: result.hd ? "HD" : "SD",
           videoUrl,
-          ...meta,
         });
       } catch (err) {
-        request.log.error({ err }, "Error in /facebook/get");
+        request.log.error({ err }, "Error in /fb/video");
         return reply.status(500).send({ error: "Failed to fetch video info" });
       }
     }
