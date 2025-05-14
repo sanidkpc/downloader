@@ -17,7 +17,18 @@ const server = (0, fastify_1.default)({
     },
 });
 server.register(cors_1.default, {
-    origin: "http://localhost:8080", // only allow this origin
+    origin: (origin, cb) => {
+        const allowedOrigins = [
+            "http://localhost:8080",
+            "https://preview-cae05e89--glassy-vid-grabber.lovable.app",
+        ];
+        if (!origin || allowedOrigins.includes(origin)) {
+            cb(null, true); // allow request
+        }
+        else {
+            cb(new Error("Not allowed by CORS"), false); // deny request
+        }
+    },
 });
 server.get("/ping", async (request, reply) => {
     request.log.info({ request });
