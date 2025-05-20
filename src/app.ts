@@ -15,15 +15,14 @@ const server = fastify({
 
 server.register(cors, {
   origin: (origin, cb) => {
-    const allowedOrigins = [
-      "http://localhost:8080",
-      "https://preview-cae05e89--glassy-vid-grabber.lovable.app",
-    ];
-
-    if (!origin || allowedOrigins.includes(origin)) {
-      cb(null, true); // allow request
+    if (
+      !origin || // allow server-to-server or non-browser requests
+      origin === "http://localhost:8080" ||
+      /^https:\/\/.*\.lovable\.app$/.test(origin) // allow all subdomains of lovable.app
+    ) {
+      cb(null, true);
     } else {
-      cb(new Error("Not allowed by CORS"), false); // deny request
+      cb(new Error("Not allowed by CORS"), false);
     }
   },
 });
