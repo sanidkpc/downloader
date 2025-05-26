@@ -18,7 +18,8 @@ server.register(cors, {
     if (
       !origin || // allow server-to-server or non-browser requests
       origin === "http://localhost:8080" ||
-      /^https:\/\/.*\.lovable\.app$/.test(origin) // allow all subdomains of lovable.app
+      /^https:\/\/.*\.lovable\.app$/.test(origin) || // allow all subdomains of lovable.app
+      /^https:\/\/.*\.web\.app$/.test(origin) // allow all subdomains of web.app
     ) {
       cb(null, true);
     } else {
